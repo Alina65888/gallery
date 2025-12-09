@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Новогодняя галерея рисунков</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg-main: #bff3ef;      /* светлый бирюзовый */
+      --bg-top:  #e9fffd;
+      --card-bg: #ffffff;
+      --accent:  #00b4a0;
+      --text:    #004047;
+      --text-soft: #0a5c63;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(to bottom, var(--bg-top), var(--bg-main));
+      color: var(--text);
+      padding: 12px;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* "Лес" из ёлок внизу */
+    body::after {
+      content: "";
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 40vh;
+      background:
+        repeating-linear-gradient(
+          -60deg,
+          #00a195 0,
+          #00a195 16px,
+          transparent 16px,
+          transparent 32px
+        ),
+        repeating-linear-gradient(
+          60deg,
+          #039b91 0,
+          #039b91 18px,
+          transparent 18px,
+          transparent 36px
+        );
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    /* Слой со снежинками */
+    .snow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .flake {
+      position: absolute;
+      top: -10%;
+      animation: fall linear infinite;
+      color: #ffffff;
+      opacity: 0.9;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(120vh);
+        opacity: 0.2;
+      }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+h1 {
+  margin: 12px 0 8px;
+  color: #00a99d;
+  font-size: clamp(26px, 6vw, 38px);
+  font-family: "Lobster", cursive;
+  letter-spacing: 1px;
+  text-shadow:
+    0 0 6px rgba(255,255,255,0.7),
+    0 4px 10px rgba(0,0,0,0.2);
+}
+
+
+    .subtitle {
+      margin: 0 auto;
+      max-width: 480px;
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+   .gallery {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+/* Телефон: одна карточка в ряд */
+@media (max-width: 600px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Планшет: две карточки в ряд */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Ноутбук и десктоп: три карточки в ряд */
+@media (min-width: 1025px) {
+  .gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 8px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.32);
+    }
+
+    .media-wrapper {
+      border-radius: 14px;
+      padding: 8px;
+      background: radial-gradient(circle at top, #dffbf8, #a7e4df);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-wrapper img {
+      max-width: 100%;
+      max-height: 320px;
+      width: auto;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .author {
+      font-size: 13px;
+      text-align: center;
+      color: var(--text-soft);
+      font-weight: 500;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      text-align: center;
+      color: rgba(0, 64, 71, 0.8);
+    }
+
+    /* Лайтбокс с видео */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.82);
+      z-index: 5;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox video {
+      width: 90%;
+      max-width: 520px;
+      border-radius: 16px;
+      background: #000;
+    }
+
+    .close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-size: 32px;
+      color: #ffffff;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .media-wrapper img {
+        max-height: 280px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Слой со снежинками -->
+  <div class="snow" id="snow"></div>
+
+  <div class="page">
+    <header>
+      <h1>Новогодняя галерея рисунков</h1>
+      <p class="subtitle">Нажмите на рисунок, чтобы открыть живую версию с анимацией.</p>
+    </header>
+
+    <main>
+             <div class="card" data-video="video/video1.mp4">
+          <div class="media-wrapper">
+            <img src="img/img1.jpg" alt="Азалия Ларионова, 12 лет">
+          </div>
+          <div class="author"> Азалия Ларионова, 12 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video2.mp4">
+          <div class="media-wrapper">
+            <img src="img/img2.jpg" alt="Алиса Ивашина, 8 лет">
+          </div>
+          <div class="author">Алиса Ивашина, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video3.mp4">
+          <div class="media-wrapper">
+            <img src="img/img3.jpg" alt="Екатерина Веремеенко, 12 лет">
+          </div>
+          <div class="author">Екатерина Веремеенко, 12 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video4.mp4">
+          <div class="media-wrapper">
+            <img src="img/img4.jpg" alt="Жасмин Хамидуллина, 8 лет">
+          </div>
+          <div class="author">Жасмин Хамидуллина, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video5.mp4">
+          <div class="media-wrapper">
+            <img src="img/img5.jpg" alt="Султан Хамидуллин, 11 лет">
+          </div>
+          <div class="author">Султан Хамидуллин, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video6.mp4">
+          <div class="media-wrapper">
+            <img src="img/img6.jpg" alt="Ильдар Зарипов, 8 лет">
+          </div>
+          <div class="author">Ильдар Зарипов, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video7.mp4">
+          <div class="media-wrapper">
+            <img src="img/img7.jpg" alt="Александра Шапошникова, 5 лет">
+          </div>
+          <div class="author">Александра Шапошникова, 5 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video8.mp4">
+          <div class="media-wrapper">
+            <img src="img/img8.jpg" alt="Самат Гарифуллин, 5 лет">
+          </div>
+          <div class="author">Самат Гарифуллин, 5 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video9.mp4">
+          <div class="media-wrapper">
+            <img src="img/img9.jpg" alt="Сафия Гарифуллина, 3 года">
+          </div>
+          <div class="author">Сафия Гарифуллина, 3 года</div>
+        </div>
+
+        <div class="card" data-video="video/video10.mp4">
+          <div class="media-wrapper">
+            <img src="img/img10.jpg" alt="Рубина Ахтямова, 14 лет">
+          </div>
+          <div class="author">Рубина Ахтямова, 14 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video11.mp4">
+          <div class="media-wrapper">
+            <img src="img/img11.jpg" alt="Регина Ахтямова, 12 лет">
+          </div>
+          <div class="author">Регина Ахтямова, 12 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video12.mp4">
+          <div class="media-wrapper">
+            <img src="img/img12.jpg" alt="Марк Пузырев, 9 лет">
+          </div>
+          <div class="author">Марк Пузырев, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video13.mp4">
+          <div class="media-wrapper">
+            <img src="img/img13.jpg" alt="Азат Зиганшин, 14 лет">
+          </div>
+          <div class="author">Азат Зиганшин, 14 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video14.mp4">
+          <div class="media-wrapper">
+            <img src="img/img14.jpg" alt="Азалия Зиганшина, 14 лет">
+          </div>
+          <div class="author">Азалия Зиганшина, 14 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video15.mp4">
+          <div class="media-wrapper">
+            <img src="img/img15.jpg" alt="Альмина Зиганшина, 6 лет">
+          </div>
+          <div class="author">Альмина Зиганшина, 6 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video16.mp4">
+          <div class="media-wrapper">
+            <img src="img/img16.jpg" alt="Жасмин Гареева, 3 года">
+          </div>
+          <div class="author">Жасмин Гареева, 3 года</div>
+        </div>
+
+        <div class="card" data-video="video/video17.mp4">
+          <div class="media-wrapper">
+            <img src="img/img17.jpg" alt="Даниил Егоров, 3 года">
+          </div>
+          <div class="author">Даниил Егоров, 3 года</div>
+        </div>
+
+        <div class="card" data-video="video/video18.mp4">
+          <div class="media-wrapper">
+            <img src="img/img18.jpg" alt="Азат Идиятуллин, 8 лет">
+          </div>
+          <div class="author">Азат Идиятуллин, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video19.mp4">
+          <div class="media-wrapper">
+            <img src="img/img19.jpg" alt="Алиса Сайгитбаталова, 9 лет">
+          </div>
+          <div class="author">Алиса Сайгитбаталова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video20.mp4">
+          <div class="media-wrapper">
+            <img src="img/img20.jpg" alt="Тимур Галявин, 9 лет">
+          </div>
+          <div class="author">Тимур Галявин, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video21.mp4">
+          <div class="media-wrapper">
+            <img src="img/img21.jpg" alt="Тимур Галявин, 10 лет">
+          </div>
+          <div class="author">Тимур Галявин, 10 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video22.mp4">
+          <div class="media-wrapper">
+            <img src="img/img22.jpg" alt="Раяна Галявина, 6 лет">
+          </div>
+          <div class="author">Раяна Галявина, 6 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video23.mp4">
+          <div class="media-wrapper">
+            <img src="img/img23.jpg" alt="Раяна Галявина, 6 лет">
+          </div>
+          <div class="author">Раяна Галявина, 6 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video24.mp4">
+          <div class="media-wrapper">
+            <img src="img/img24.jpg" alt="Шильцина Мия Руслановна, 7 лет">
+          </div>
+          <div class="author">Шильцина Мия Руслановна, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video25.mp4">
+          <div class="media-wrapper">
+            <img src="img/img25.jpg" alt="Индира Хайрутдинова, 6 лет">
+          </div>
+          <div class="author">Индира Хайрутдинова, 6 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video26.mp4">
+          <div class="media-wrapper">
+            <img src="img/img26.jpg" alt="Диана Хайрутдинова, 9 лет">
+          </div>
+          <div class="author">Диана Хайрутдинова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video27.mp4">
+          <div class="media-wrapper">
+            <img src="img/img27.jpg" alt="Диана Хайрутдинова, 9 лет">
+          </div>
+          <div class="author">Диана Хайрутдинова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video28.mp4">
+          <div class="media-wrapper">
+            <img src="img/img28.jpg" alt="Тимур Фатыхов, 8 лет">
+          </div>
+          <div class="author">Тимур Фатыхов, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video29.mp4">
+          <div class="media-wrapper">
+            <img src="img/img29.jpg" alt="Даян Галимзянов, 6 лет">
+          </div>
+          <div class="author">Даян Галимзянов, 6 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video30.mp4">
+          <div class="media-wrapper">
+            <img src="img/img30.jpg" alt="Ралина Галимзянова, 8 лет">
+          </div>
+          <div class="author">Ралина Галимзянова, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video31.mp4">
+          <div class="media-wrapper">
+            <img src="img/img31.jpg" alt="Дилия Галимзянова, 5 лет">
+          </div>
+          <div class="author">Дилия Галимзянова, 5 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video32.mp4">
+          <div class="media-wrapper">
+            <img src="img/img32.jpg" alt="Маргарита Жукова, 8 лет">
+          </div>
+          <div class="author">Маргарита Жукова, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video33.mp4">
+          <div class="media-wrapper">
+            <img src="img/img33.jpg" alt="Алиса Сальникова, 9 лет">
+          </div>
+          <div class="author">Алиса Сальникова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video34.mp4">
+          <div class="media-wrapper">
+            <img src="img/img34.jpg" alt="Лейла Фатыхова, 10 лет">
+          </div>
+          <div class="author">Лейла Фатыхова, 10 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video35.mp4">
+          <div class="media-wrapper">
+            <img src="img/img35.jpg" alt="Алина Назипова, 9 лет">
+          </div>
+          <div class="author">Алина Назипова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video36.mp4">
+          <div class="media-wrapper">
+            <img src="img/img36.jpg" alt="Аделина Хантимерова, 7 лет">
+          </div>
+          <div class="author">Аделина Хантимерова, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video37.mp4">
+          <div class="media-wrapper">
+            <img src="img/img37.jpg" alt="Ясмина Галиахметова, 9 лет">
+          </div>
+          <div class="author">Ясмина Галиахметова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video38.mp4">
+          <div class="media-wrapper">
+            <img src="img/img38.jpg" alt="Виктория Захарова, 10 лет">
+          </div>
+          <div class="author">Виктория Захарова, 10 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video39.mp4">
+          <div class="media-wrapper">
+            <img src="img/img39.jpg" alt="Дарина Шайхетдинова, 11 лет">
+          </div>
+          <div class="author">Дарина Шайхетдинова, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video40.mp4">
+          <div class="media-wrapper">
+            <img src="img/img40.jpg" alt="Ранель Исхаков, 7 лет">
+          </div>
+          <div class="author">Ранель Исхаков, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video41.mp4">
+          <div class="media-wrapper">
+            <img src="img/img41.jpg" alt="Радель Зарипов, 9 лет">
+          </div>
+          <div class="author">Радель Зарипов, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video42.mp4">
+          <div class="media-wrapper">
+            <img src="img/img42.jpg" alt="Азалия Зарипова, 12 лет">
+          </div>
+          <div class="author">Азалия Зарипова, 12 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video43.mp4">
+          <div class="media-wrapper">
+            <img src="img/img43.jpg" alt="Амелия Хабатуллина, 5 лет">
+          </div>
+          <div class="author">Амелия Хабатуллина, 5 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video44.mp4">
+          <div class="media-wrapper">
+            <img src="img/img44.jpg" alt="Аяна Хабатуллина, 7 лет">
+          </div>
+          <div class="author">Аяна Хабатуллина, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video45.mp4">
+          <div class="media-wrapper">
+            <img src="img/img45.jpg" alt="Александра Лаврентьева, 4 года">
+          </div>
+          <div class="author">Александра Лаврентьева, 4 года</div>
+        </div>
+
+        <div class="card" data-video="video/video46.mp4">
+          <div class="media-wrapper">
+            <img src="img/img46.jpg" alt="Полина Зайцева, 4 года">
+          </div>
+          <div class="author">Полина Зайцева, 4 года</div>
+        </div>
+
+        <div class="card" data-video="video/video47.mp4">
+          <div class="media-wrapper">
+            <img src="img/img47.jpg" alt="Азиза Хамматова, 5 лет">
+          </div>
+          <div class="author">Азиза Хамматова, 5 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video48.mp4">
+          <div class="media-wrapper">
+            <img src="img/img48.jpg" alt="Ясмина Зарипова, 6 лет">
+          </div>
+          <div class="author">Ясмина Зарипова, 6 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video49.mp4">
+          <div class="media-wrapper">
+            <img src="img/img49.jpg" alt="Диля Зарипова, 13 лет">
+          </div>
+          <div class="author">Диля Зарипова, 13 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video50.mp4">
+          <div class="media-wrapper">
+            <img src="img/img50.jpg" alt="Асель Закирова, 8 лет">
+          </div>
+          <div class="author">Асель Закирова, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video51.mp4">
+          <div class="media-wrapper">
+            <img src="img/img51.jpg" alt="Эсмира Тимерханова, 11 лет">
+          </div>
+          <div class="author">Эсмира Тимерханова, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video52.mp4">
+          <div class="media-wrapper">
+            <img src="img/img52.jpg" alt="Самат Сахапов, 11 лет">
+          </div>
+          <div class="author">Самат Сахапов, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video53.mp4">
+          <div class="media-wrapper">
+            <img src="img/img53.jpg" alt="Далиля Закирова, 10 лет">
+          </div>
+          <div class="author">Далиля Закирова, 10 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video54.mp4">
+          <div class="media-wrapper">
+            <img src="img/img54.jpg" alt="Фарида Закирова, 5 лет">
+          </div>
+          <div class="author">Фарида Закирова, 5 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video55.mp4">
+          <div class="media-wrapper">
+            <img src="img/img55.jpg" alt="Малика Хайрутдинова, 9 лет">
+          </div>
+          <div class="author">Малика Хайрутдинова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video56.mp4">
+          <div class="media-wrapper">
+            <img src="img/img56.jpg" alt="Эльдар Шарипов, 11 лет">
+          </div>
+          <div class="author">Эльдар Шарипов, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video57.mp4">
+          <div class="media-wrapper">
+            <img src="img/img57.jpg" alt="Альвар Шарипов, 4 года">
+          </div>
+          <div class="author">Альвар Шарипов, 4 года</div>
+        </div>
+
+        <div class="card" data-video="video/video58.mp4">
+          <div class="media-wrapper">
+            <img src="img/img58.jpg" alt="Адель Шарипов, 9 лет">
+          </div>
+          <div class="author">Адель Шарипов, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video59.mp4">
+          <div class="media-wrapper">
+            <img src="img/img59.jpg" alt="Диляра Гарипова, 10 лет">
+          </div>
+          <div class="author">Диляра Гарипова, 10 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video60.mp4">
+          <div class="media-wrapper">
+            <img src="img/img60.jpg" alt="Айрат Исмагилов, 11 лет">
+          </div>
+          <div class="author">Айрат Исмагилов, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video61.mp4">
+          <div class="media-wrapper">
+            <img src="img/img61.jpg" alt="Алина Исмагилова, 12 лет">
+          </div>
+          <div class="author">Алина Исмагилова, 12 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video62.mp4">
+          <div class="media-wrapper">
+            <img src="img/img62.jpg" alt="Анна Корочкина, 7 лет">
+          </div>
+          <div class="author">Анна Корочкина, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video63.mp4">
+          <div class="media-wrapper">
+            <img src="img/img63.jpg" alt="Миляуша Шарипова, 7 лет">
+          </div>
+          <div class="author">Миляуша Шарипова, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video64.mp4">
+          <div class="media-wrapper">
+            <img src="img/img64.jpg" alt="Милана Тихонова, 11 лет">
+          </div>
+          <div class="author">Милана Тихонова, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video65.mp4">
+          <div class="media-wrapper">
+            <img src="img/img65.jpg" alt="Эсмира Тимерханова, 11 лет">
+          </div>
+          <div class="author">Эсмира Тимерханова, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video66.mp4">
+          <div class="media-wrapper">
+            <img src="img/img66.jpg" alt="Ильхам Хисамутдинов, 13 лет">
+          </div>
+          <div class="author">Ильхам Хисамутдинов, 13 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video67.mp4">
+          <div class="media-wrapper">
+            <img src="img/img67.jpg" alt="Амир Тимергалеев, 10 лет">
+          </div>
+          <div class="author">Амир Тимергалеев, 10 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video68.mp4">
+          <div class="media-wrapper">
+            <img src="img/img68.jpg" alt="Давид Аптекарь, 11 лет">
+          </div>
+          <div class="author">Давид Аптекарь, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video69.mp4">
+          <div class="media-wrapper">
+            <img src="img/img69.jpg" alt="Злата Анисимова, 9 лет">
+          </div>
+          <div class="author">Злата Анисимова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video70.mp4">
+          <div class="media-wrapper">
+            <img src="img/img70.jpg" alt="Лиза Анисимова, 7 лет">
+          </div>
+          <div class="author">Лиза Анисимова, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video71.mp4">
+          <div class="media-wrapper">
+            <img src="img/img71.jpg" alt="Алан Имамутдинов, 11 лет">
+          </div>
+          <div class="author">Алан Имамутдинов, 11 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video72.mp4">
+          <div class="media-wrapper">
+            <img src="img/img72.jpg" alt="Диана Ибрагимова, 8 лет">
+          </div>
+          <div class="author">Диана Ибрагимова, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video73.mp4">
+          <div class="media-wrapper">
+            <img src="img/img73.jpg" alt="Камиль Хисамутдинов, 7 лет">
+          </div>
+          <div class="author">Камиль Хисамутдинов, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video74.mp4">
+          <div class="media-wrapper">
+            <img src="img/img74.jpg" alt="Амир Гиниятуллин, 6 лет">
+          </div>
+          <div class="author">Амир Гиниятуллин, 6 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video75.mp4">
+          <div class="media-wrapper">
+            <img src="img/img75.jpg" alt="Милана Багаутдинова, 10 лет">
+          </div>
+          <div class="author">Милана Багаутдинова, 10 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video76.mp4">
+          <div class="media-wrapper">
+            <img src="img/img76.jpg" alt="Вероника Суслова, 8 лет">
+          </div>
+          <div class="author">Вероника Суслова, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video77.mp4">
+          <div class="media-wrapper">
+            <img src="img/img77.jpg" alt="Валерия Плотникова, 8 лет">
+          </div>
+          <div class="author">Валерия Плотникова, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video78.mp4">
+          <div class="media-wrapper">
+            <img src="img/img78.jpg" alt="Реналь Галимханов, 12 лет">
+          </div>
+          <div class="author">Реналь Галимханов, 12 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video79.mp4">
+          <div class="media-wrapper">
+            <img src="img/img79.jpg" alt="София Угнич, 9 лет">
+          </div>
+          <div class="author">София Угнич, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video80.mp4">
+          <div class="media-wrapper">
+            <img src="img/img80.jpg" alt="Полина Владимирова, 7 лет">
+          </div>
+          <div class="author">Полина Владимирова, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video81.mp4">
+          <div class="media-wrapper">
+            <img src="img/img81.jpg" alt="Виктория Семенова, 9 лет">
+          </div>
+          <div class="author">Виктория Семенова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video82.mp4">
+          <div class="media-wrapper">
+            <img src="img/img82.jpg" alt="Кирилл Астафьев, 5 лет">
+          </div>
+          <div class="author">Кирилл Астафьев, 5 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video83.mp4">
+          <div class="media-wrapper">
+            <img src="img/img83.jpg" alt="Ангелия Гадельшина, 9 лет">
+          </div>
+          <div class="author">Ангелия Гадельшина, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video84.mp4">
+          <div class="media-wrapper">
+            <img src="img/img84.jpg" alt="Адель Шигабиев, 7 лет">
+          </div>
+          <div class="author">Адель Шигабиев, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video85.mp4">
+          <div class="media-wrapper">
+            <img src="img/img85.jpg" alt="Азалия Мухамадиева, 9 лет">
+          </div>
+          <div class="author">Азалия Мухамадиева, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video86.mp4">
+          <div class="media-wrapper">
+            <img src="img/img86.jpg" alt="Ясмина Мухамадиева, 4 года">
+          </div>
+          <div class="author">Ясмина Мухамадиева, 4 года</div>
+        </div>
+
+        <div class="card" data-video="video/video87.mp4">
+          <div class="media-wrapper">
+            <img src="img/img87.jpg" alt="Элина Хайрутдинова, 13 лет">
+          </div>
+          <div class="author">Элина Хайрутдинова, 13 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video88.mp4">
+          <div class="media-wrapper">
+            <img src="img/img88.jpg" alt="Рафина Николаева, 4 года">
+          </div>
+          <div class="author">Рафина Николаева, 4 года</div>
+        </div>
+
+        <div class="card" data-video="video/video89.mp4">
+          <div class="media-wrapper">
+            <img src="img/img89.jpg" alt="Райхан Николаева, 2 года">
+          </div>
+          <div class="author">Райхан Николаева, 2 года</div>
+        </div>
+
+        <div class="card" data-video="video/video90.mp4">
+          <div class="media-wrapper">
+            <img src="img/img90.jpg" alt="Азалия Хайретдинова, 5 лет">
+          </div>
+          <div class="author">Азалия Хайретдинова, 5 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video91.mp4">
+          <div class="media-wrapper">
+            <img src="img/img91.jpg" alt="Камиль Хайретдинов, 9 лет">
+          </div>
+          <div class="author">Камиль Хайретдинов, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video92.mp4">
+          <div class="media-wrapper">
+            <img src="img/img92.jpg" alt="Элина Халилова, 10 лет">
+          </div>
+          <div class="author">Элина Халилова, 10 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video93.mp4">
+          <div class="media-wrapper">
+            <img src="img/img93.jpg" alt="Данил Халилов, 6 лет">
+          </div>
+          <div class="author">Данил Халилов, 6 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video94.mp4">
+          <div class="media-wrapper">
+            <img src="img/img94.jpg" alt="Ульяна Тюфякова, 9 лет">
+          </div>
+          <div class="author">Ульяна Тюфякова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video95.mp4">
+          <div class="media-wrapper">
+            <img src="img/img95.jpg" alt="Алеся Тузанкина, 9 лет">
+          </div>
+          <div class="author">Алеся Тузанкина, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video96.mp4">
+          <div class="media-wrapper">
+            <img src="img/img96.jpg" alt="Карим Галиев, 12 лет">
+          </div>
+          <div class="author">Карим Галиев, 12 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video97.mp4">
+          <div class="media-wrapper">
+            <img src="img/img97.jpg" alt="Алиса Филатова, 9 лет">
+          </div>
+          <div class="author">Алиса Филатова, 9 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video98.mp4">
+          <div class="media-wrapper">
+            <img src="img/img98.jpg" alt="Айзат Багманов, 8 лет">
+          </div>
+          <div class="author">Айзат Багманов, 8 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video99.mp4">
+          <div class="media-wrapper">
+            <img src="img/img99.jpg" alt="Данияр Багманов, 4 года">
+          </div>
+          <div class="author">Данияр Багманов, 4 года</div>
+        </div>
+
+        <div class="card" data-video="video/video100.mp4">
+          <div class="media-wrapper">
+            <img src="img/img100.jpg" alt="Эмилия Багманова, 1 год">
+          </div>
+          <div class="author">Эмилия Багманова, 1 год</div>
+        </div>
+
+        <div class="card" data-video="video/video101.mp4">
+          <div class="media-wrapper">
+            <img src="img/img101.jpg" alt="Иллария Хамидуллина, 7 лет">
+          </div>
+          <div class="author">Иллария Хамидуллина, 7 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video102.mp4">
+          <div class="media-wrapper">
+            <img src="img/img102.jpg" alt="Александра Березина, 10 лет">
+          </div>
+          <div class="author">Александра Березина, 10 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video103.mp4">
+          <div class="media-wrapper">
+            <img src="img/img103.jpg" alt="Константин Березин, 5 лет">
+          </div>
+          <div class="author">Константин Березин, 5 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video104.mp4">
+          <div class="media-wrapper">
+            <img src="img/img104.jpg" alt="Камила Хусаинова, 12 лет">
+          </div>
+          <div class="author">Камила Хусаинова, 12 лет</div>
+        </div>
+
+        <div class="card" data-video="video/video105.mp4">
+          <div class="media-wrapper">
+            <img src="img/img105.jpg" alt="Зарина Зиятдинова, 2 года">
+          </div>
+          <div class="author">Зарина Зиятдинова, 2 года</div>
+        </div>
+
+      <p class="hint">
+        Имена, возраст и пути к файлам можно поменять прямо в этом HTML-файле.
+      </p>
+    </main>
+  </div>
+
+  <!-- Всплывающее окно с видео -->
+  <div class="lightbox" id="lightbox">
+    <div class="close" onclick="closeVideo()">×</div>
+    <video id="player" controls playsinline></video>
+  </div>
+
+  <script>
+    // Фигурные снежинки
+    const snowLayer = document.getElementById("snow");
+    const shapes = ["❄", "✦", "✺", "✱", "❅"];
+
+    for (let i = 0; i < 70; i++) {
+      const s = document.createElement("div");
+      s.className = "flake";
+      s.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+      s.style.left = Math.random() * 100 + "vw";
+      s.style.fontSize = 10 + Math.random() * 10 + "px";
+      s.style.animationDuration = 8 + Math.random() * 10 + "s";
+      s.style.animationDelay = -Math.random() * 20 + "s";
+      snowLayer.appendChild(s);
+    }
+
+    // Открытие видео по клику на карточку
+    const cards = document.querySelectorAll(".card");
+    const lightbox = document.getElementById("lightbox");
+    const player = document.getElementById("player");
+
+    cards.forEach(card => {
+      card.addEventListener("click", () => {
+        const src = card.dataset.video;   // например video/video1.mp4
+        if (src) {
+          player.src = src;
+          player.play().catch(() => { });
+        }
+        lightbox.classList.add("open");
+      });
+    });
+
+    function closeVideo() {
+      player.pause();
+      player.removeAttribute("src");
+      player.load();
+      lightbox.classList.remove("open");
+    }
+
+    // Закрытие по клику вне видео или по Esc
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) {
+        closeVideo();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lightbox.classList.contains("open")) {
+        closeVideo();
+      }
+    });
+  </script>
+</body>
+</html>
