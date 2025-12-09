@@ -44,19 +44,19 @@
       background:
         repeating-linear-gradient(
           -60deg,
-          #66d9ef 0,         /* Более мягкий бирюзовый */
+          #66d9ef 0,
           #66d9ef 16px,
           transparent 16px,
           transparent 32px
         ),
         repeating-linear-gradient(
           60deg,
-          #30e3ca 0,         /* Еще один оттенок */
+          #30e3ca 0,
           #30e3ca 18px,
           transparent 18px,
           transparent 36px
         );
-      opacity: 0.35; /* Сделаем его менее заметным */
+      opacity: 0.35;
       z-index: 0;
     }
 
@@ -73,8 +73,8 @@
       top: -10%;
       animation: fall linear infinite;
       color: var(--accent); /* Бирюзовые снежинки */
-      opacity: 0.8;
-      text-shadow: 0 0 3px rgba(0, 180, 160, 0.5); /* Небольшое свечение */
+      opacity: 0.4; /* СДЕЛАНО МЕНЕЕ ЗАМЕТНЫМ */
+      /* text-shadow удален */
     }
 
     @keyframes fall {
@@ -98,12 +98,11 @@
 
     h1 {
       margin: 12px 0 8px;
-      color: var(--text); /* Темный заголовок */
+      color: var(--text);
       font-size: clamp(26px, 6vw, 38px);
-      font-family: "Montserrat", sans-serif; /* Стильный современный шрифт */
-      font-weight: 900; /* Очень жирное начертание */
+      font-family: "Montserrat", sans-serif;
+      font-weight: 900;
       letter-spacing: 1px;
-      /* Мягкая тень в корпоративном цвете */
       text-shadow: 0 4px 6px rgba(0, 180, 160, 0.4);
     }
 
@@ -115,10 +114,9 @@
       color: var(--text-soft);
     }
 
-   /* РАБОТА НАД РАСПОЛОЖЕНИЕМ ПЛИТОК (ГАЛЕРЕЯ) */
    .gallery {
       display: grid;
-      gap: 16px; /* Немного уменьшим отступ, чтобы сделать плитки более компактными */
+      gap: 16px;
       margin-top: 20px;
     }
 
@@ -147,26 +145,25 @@
 
     .card {
       background: var(--card-bg);
-      border-radius: 12px; /* Уменьшим скругление */
-      padding: 8px; /* Сделаем карточку тоньше/легче */
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Более легкая тень */
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       display: flex;
       flex-direction: column;
-      gap: 6px; /* Уменьшим отступ внутри карточки */
-      border: 1px solid rgba(0, 180, 160, 0.1); /* Легкий контур */
+      gap: 6px;
+      border: 1px solid rgba(0, 180, 160, 0.1);
     }
 
     .card:hover {
-      transform: translateY(-2px); /* Приподнимаем, а не увеличиваем */
-      box-shadow: 0 12px 25px rgba(0, 180, 160, 0.3); /* Тень в акцентном цвете */
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(0, 180, 160, 0.3);
     }
 
     .media-wrapper {
-      border-radius: 8px; /* Скругление изображения */
+      border-radius: 8px;
       padding: 6px;
-      /* Стильная рамка в корпоративном акцентном цвете */
       background:
         linear-gradient(white, white) padding-box,
         linear-gradient(45deg, var(--accent), #66d9ef) border-box;
@@ -178,7 +175,7 @@
 
     .media-wrapper img {
       max-width: 100%;
-      max-height: 280px; /* Сделаем изображения немного меньше/компактнее */
+      max-height: 280px;
       width: auto;
       height: auto;
       border-radius: 6px;
@@ -189,7 +186,7 @@
     .author {
       font-size: 13px;
       text-align: center;
-      color: var(--accent); /* Имена - акцентным цветом */
+      color: var(--accent);
       font-weight: 600;
       letter-spacing: 0.5px;
       padding-bottom: 2px;
@@ -201,7 +198,7 @@
       font-size: 12px;
       text-align: center;
       color: var(--text-soft);
-      background-color: rgba(255, 255, 255, 0.6); /* Полупрозрачный белый фон для подсказки */
+      background-color: rgba(255, 255, 255, 0.6);
       border-radius: 8px;
     }
 
@@ -212,7 +209,7 @@
       display: none;
       align-items: center;
       justify-content: center;
-      background: rgba(0, 0, 0, 0.85); /* Чуть более светлый фон, чем в предыдущем варианте */
+      background: rgba(0, 0, 0, 0.85);
       z-index: 5;
     }
 
@@ -225,7 +222,7 @@
       max-width: 600px;
       border-radius: 16px;
       background: #000;
-      box-shadow: 0 0 25px rgba(0, 180, 160, 0.6); /* Свечение в акцентном цвете */
+      box-shadow: 0 0 25px rgba(0, 180, 160, 0.6);
     }
 
     .close {
@@ -233,7 +230,7 @@
       top: 14px;
       right: 18px;
       font-size: 40px;
-      color: var(--bg-top); /* Светлый крестик */
+      color: var(--bg-top);
       cursor: pointer;
       line-height: 1;
       text-shadow: 0 0 5px #000;
@@ -1023,15 +1020,14 @@
   <script>
     // Фигурные снежинки
     const snowLayer = document.getElementById("snow");
-    // Используем исходные формы, делая их бирюзовыми/белыми
     const shapes = ["❄", "✦", "✺", "✱", "❅", "✶", "⭑", "✤"]; 
 
-    for (let i = 0; i < 90; i++) {
+    for (let i = 0; i < 50; i++) { // УМЕНЬШЕНО КОЛИЧЕСТВО СНЕЖИНОК (с 90 до 50)
       const s = document.createElement("div");
       s.className = "flake";
       s.textContent = shapes[Math.floor(Math.random() * shapes.length)];
       s.style.left = Math.random() * 100 + "vw";
-      s.style.fontSize = 12 + Math.random() * 12 + "px";
+      s.style.fontSize = 8 + Math.random() * 8 + "px"; // УМЕНЬШЕН РАЗМЕР (от 8px до 16px)
       s.style.animationDuration = 7 + Math.random() * 12 + "s";
       s.style.animationDelay = -Math.random() * 25 + "s";
       snowLayer.appendChild(s);
