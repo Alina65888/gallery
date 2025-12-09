@@ -994,7 +994,7 @@ h1 {
   <!-- Всплывающее окно с видео -->
   <div class="lightbox" id="lightbox">
     <div class="close" onclick="closeVideo()">×</div>
-    <video id="player" controls playsinline></video>
+    <video id="player" controls playsinline muted preload="metadata"></video>
   </div>
 
   <script>
@@ -1018,16 +1018,21 @@ h1 {
     const lightbox = document.getElementById("lightbox");
     const player = document.getElementById("player");
 
-    cards.forEach(card => {
-      card.addEventListener("click", () => {
-        const src = card.dataset.video;   // например video/video1.mp4
-        if (src) {
-          player.src = src;
-          player.play().catch(() => { });
-        }
-        lightbox.classList.add("open");
-      });
-    });
+cards.forEach(card => {
+  card.addEventListener("click", () => {
+    const index = parseInt(card.dataset.index, 10);
+    const src = videoLinks[index - 1];
+
+    if (src) {
+      player.src = src;
+      player.muted = true;            // важно для автозапуска на iOS
+      player.play().catch(() => {});
+    }
+
+    lightbox.classList.add("open");
+  });
+});
+
 
     function closeVideo() {
       player.pause();
