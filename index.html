@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <title>Новогодняя галерея рисунков</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+    /* ИСХОДНАЯ КОРПОРАТИВНАЯ ПАЛИТРА */
     :root {
       --bg-main: #bff3ef;      /* светлый бирюзовый */
-      --bg-top:  #e9fffd;
-      --card-bg: #ffffff;
-      --accent:  #00b4a0;
-      --text:    #004047;
-      --text-soft: #0a5c63;
+      --bg-top:  #e9fffd;      /* очень светлый бирюзовый */
+      --card-bg: #ffffff;      /* Белый фон карточки */
+      --accent:  #00b4a0;      /* Яркий бирюзовый акцент */
+      --text:    #004047;      /* Темный текст */
+      --text-soft: #0a5c63;    /* Серый текст */
     }
 
     * {
@@ -23,6 +24,7 @@
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      /* Мягкий градиент в корпоративных тонах */
       background: linear-gradient(to bottom, var(--bg-top), var(--bg-main));
       color: var(--text);
       padding: 12px;
@@ -31,7 +33,7 @@
       position: relative;
     }
 
-    /* "Лес" из ёлок внизу */
+    /* "Лес" из ёлок внизу - более мягкий, ненавязчивый */
     body::after {
       content: "";
       position: fixed;
@@ -42,19 +44,19 @@
       background:
         repeating-linear-gradient(
           -60deg,
-          #00a195 0,
-          #00a195 16px,
+          #66d9ef 0,         /* Более мягкий бирюзовый */
+          #66d9ef 16px,
           transparent 16px,
           transparent 32px
         ),
         repeating-linear-gradient(
           60deg,
-          #039b91 0,
-          #039b91 18px,
+          #30e3ca 0,         /* Еще один оттенок */
+          #30e3ca 18px,
           transparent 18px,
           transparent 36px
         );
-      opacity: 0.35;
+      opacity: 0.35; /* Сделаем его менее заметным */
       z-index: 0;
     }
 
@@ -70,8 +72,9 @@
       position: absolute;
       top: -10%;
       animation: fall linear infinite;
-      color: #ffffff;
-      opacity: 0.9;
+      color: var(--accent); /* Бирюзовые снежинки */
+      opacity: 0.8;
+      text-shadow: 0 0 3px rgba(0, 180, 160, 0.5); /* Небольшое свечение */
     }
 
     @keyframes fall {
@@ -93,74 +96,81 @@
       margin-bottom: 14px;
     }
 
-h1 {
-  margin: 12px 0 8px;
-  color: #00a99d;
-  font-size: clamp(26px, 6vw, 38px);
-  font-family: "Lobster", cursive;
-  letter-spacing: 1px;
-  text-shadow:
-    0 0 6px rgba(255,255,255,0.7),
-    0 4px 10px rgba(0,0,0,0.2);
-}
+    h1 {
+      margin: 12px 0 8px;
+      color: var(--text); /* Темный заголовок */
+      font-size: clamp(26px, 6vw, 38px);
+      font-family: "Montserrat", sans-serif; /* Стильный современный шрифт */
+      font-weight: 900; /* Очень жирное начертание */
+      letter-spacing: 1px;
+      /* Мягкая тень в корпоративном цвете */
+      text-shadow: 0 4px 6px rgba(0, 180, 160, 0.4);
+    }
 
 
     .subtitle {
       margin: 0 auto;
       max-width: 480px;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-soft);
     }
 
+   /* РАБОТА НАД РАСПОЛОЖЕНИЕМ ПЛИТОК (ГАЛЕРЕЯ) */
    .gallery {
-  display: grid;
-  gap: 16px;
-  margin-top: 16px;
-}
+      display: grid;
+      gap: 16px; /* Немного уменьшим отступ, чтобы сделать плитки более компактными */
+      margin-top: 20px;
+    }
 
-/* Телефон: одна карточка в ряд */
-@media (max-width: 600px) {
-  .gallery {
-    grid-template-columns: 1fr;
-  }
-}
+    /* Телефон: одна карточка в ряд */
+    @media (max-width: 600px) {
+      .gallery {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
 
-/* Планшет: две карточки в ряд */
-@media (min-width: 601px) and (max-width: 1024px) {
-  .gallery {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+    /* Планшет: две карточки в ряд */
+    @media (min-width: 601px) and (max-width: 1024px) {
+      .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
 
-/* Ноутбук и десктоп: три карточки в ряд */
-@media (min-width: 1025px) {
-  .gallery {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
+    /* Ноутбук и десктоп: три карточки в ряд */
+    @media (min-width: 1025px) {
+      .gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
 
 
     .card {
       background: var(--card-bg);
-      border-radius: 18px;
-      padding: 8px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+      border-radius: 12px; /* Уменьшим скругление */
+      padding: 8px; /* Сделаем карточку тоньше/легче */
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Более легкая тень */
       cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 6px; /* Уменьшим отступ внутри карточки */
+      border: 1px solid rgba(0, 180, 160, 0.1); /* Легкий контур */
     }
 
     .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.32);
+      transform: translateY(-2px); /* Приподнимаем, а не увеличиваем */
+      box-shadow: 0 12px 25px rgba(0, 180, 160, 0.3); /* Тень в акцентном цвете */
     }
 
     .media-wrapper {
-      border-radius: 14px;
-      padding: 8px;
-      background: radial-gradient(circle at top, #dffbf8, #a7e4df);
+      border-radius: 8px; /* Скругление изображения */
+      padding: 6px;
+      /* Стильная рамка в корпоративном акцентном цвете */
+      background:
+        linear-gradient(white, white) padding-box,
+        linear-gradient(45deg, var(--accent), #66d9ef) border-box;
+      border: 3px solid transparent;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -168,25 +178,31 @@ h1 {
 
     .media-wrapper img {
       max-width: 100%;
-      max-height: 320px;
+      max-height: 280px; /* Сделаем изображения немного меньше/компактнее */
       width: auto;
       height: auto;
-      border-radius: 12px;
+      border-radius: 6px;
       display: block;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .author {
       font-size: 13px;
       text-align: center;
-      color: var(--text-soft);
-      font-weight: 500;
+      color: var(--accent); /* Имена - акцентным цветом */
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding-bottom: 2px;
     }
 
     .hint {
-      margin-top: 10px;
-      font-size: 11px;
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 12px;
       text-align: center;
-      color: rgba(0, 64, 71, 0.8);
+      color: var(--text-soft);
+      background-color: rgba(255, 255, 255, 0.6); /* Полупрозрачный белый фон для подсказки */
+      border-radius: 8px;
     }
 
     /* Лайтбокс с видео */
@@ -196,7 +212,7 @@ h1 {
       display: none;
       align-items: center;
       justify-content: center;
-      background: rgba(0, 0, 0, 0.82);
+      background: rgba(0, 0, 0, 0.85); /* Чуть более светлый фон, чем в предыдущем варианте */
       z-index: 5;
     }
 
@@ -206,19 +222,27 @@ h1 {
 
     .lightbox video {
       width: 90%;
-      max-width: 520px;
+      max-width: 600px;
       border-radius: 16px;
       background: #000;
+      box-shadow: 0 0 25px rgba(0, 180, 160, 0.6); /* Свечение в акцентном цвете */
     }
 
     .close {
       position: absolute;
       top: 14px;
       right: 18px;
-      font-size: 32px;
-      color: #ffffff;
+      font-size: 40px;
+      color: var(--bg-top); /* Светлый крестик */
       cursor: pointer;
       line-height: 1;
+      text-shadow: 0 0 5px #000;
+      transition: transform 0.2s ease;
+    }
+
+    .close:hover {
+      transform: scale(1.1);
+      color: var(--accent);
     }
 
     @media (max-width: 600px) {
@@ -228,11 +252,11 @@ h1 {
 
       .gallery {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 10px;
       }
 
       .media-wrapper img {
-        max-height: 280px;
+        max-height: 250px;
       }
     }
   </style>
@@ -240,7 +264,6 @@ h1 {
 
 <body>
 
-  <!-- Слой со снежинками -->
   <div class="snow" id="snow"></div>
 
   <div class="page">
@@ -249,8 +272,8 @@ h1 {
       <p class="subtitle">Нажмите на рисунок, чтобы открыть живую версию с анимацией.</p>
     </header>
 
-    <main>
-             <div class="card" data-video="video/video1.mp4">
+    <main class="gallery">
+      <div class="card" data-video="video/video1.mp4">
           <div class="media-wrapper">
             <img src="img/img1.jpg" alt="Азалия Ларионова, 12 лет">
           </div>
@@ -985,31 +1008,32 @@ h1 {
           <div class="author">Зарина Зиятдинова, 2 года</div>
         </div>
 
+
       <p class="hint">
         Имена, возраст и пути к файлам можно поменять прямо в этом HTML-файле.
       </p>
     </main>
   </div>
 
-  <!-- Всплывающее окно с видео -->
   <div class="lightbox" id="lightbox">
     <div class="close" onclick="closeVideo()">×</div>
-    <video id="player" controls playsinline muted preload="metadata"></video>
+    <video id="player" controls playsinline></video>
   </div>
 
   <script>
     // Фигурные снежинки
     const snowLayer = document.getElementById("snow");
-    const shapes = ["❄", "✦", "✺", "✱", "❅"];
+    // Используем исходные формы, делая их бирюзовыми/белыми
+    const shapes = ["❄", "✦", "✺", "✱", "❅", "✶", "⭑", "✤"]; 
 
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < 90; i++) {
       const s = document.createElement("div");
       s.className = "flake";
       s.textContent = shapes[Math.floor(Math.random() * shapes.length)];
       s.style.left = Math.random() * 100 + "vw";
-      s.style.fontSize = 10 + Math.random() * 10 + "px";
-      s.style.animationDuration = 8 + Math.random() * 10 + "s";
-      s.style.animationDelay = -Math.random() * 20 + "s";
+      s.style.fontSize = 12 + Math.random() * 12 + "px";
+      s.style.animationDuration = 7 + Math.random() * 12 + "s";
+      s.style.animationDelay = -Math.random() * 25 + "s";
       snowLayer.appendChild(s);
     }
 
@@ -1018,24 +1042,23 @@ h1 {
     const lightbox = document.getElementById("lightbox");
     const player = document.getElementById("player");
 
-cards.forEach(card => {
-  card.addEventListener("click", () => {
-    const index = parseInt(card.dataset.index, 10);
-    const src = videoLinks[index - 1];
-
-    if (src) {
-      player.src = src;
-      player.muted = true;            // важно для автозапуска на iOS
-      player.play().catch(() => {});
-    }
-
-    lightbox.classList.add("open");
-  });
-});
-
+    cards.forEach(card => {
+      card.addEventListener("click", () => {
+        const src = card.dataset.video;   
+        if (src) {
+          player.src = src;
+          // Попытка воспроизведения с обработкой ошибки
+          player.play().catch((error) => {
+            console.log("Воспроизведение видео было заблокировано или произошла ошибка:", error);
+           });
+        }
+        lightbox.classList.add("open");
+      });
+    });
 
     function closeVideo() {
       player.pause();
+      player.currentTime = 0;
       player.removeAttribute("src");
       player.load();
       lightbox.classList.remove("open");
@@ -1043,7 +1066,7 @@ cards.forEach(card => {
 
     // Закрытие по клику вне видео или по Esc
     lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) {
+      if (e.target === lightbox || e.target.classList.contains('close')) {
         closeVideo();
       }
     });
